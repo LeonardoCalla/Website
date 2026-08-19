@@ -364,6 +364,17 @@
       insight:"Notice period doesn't depend on amplitude — a wider swing covers more distance but also moves faster, and for ideal SHM the two effects cancel exactly."
     },
     {
+      id:"m10", topic:"mech", code:"M-10", title:"Kinetik Energy",
+      tex:"K = 1\\2 m v^2",
+      vars:[
+        {key:"m", sym:"m", label:"m", unit:"kg", def:1, step:0.1},
+        {key:"v", sym:"v", label:"v", unit:"m/s", def:10, step:0.5}
+      ],
+      out:{sym:"K", unit:"J"},
+      compute:function(v){ return 0.5*(v.m)*(v.v)*(v.v); },
+      insight:"Kinetic Energy is the easiest form of energy to understand: The faster an object move the more energy it carries. Although this is the simplest of the definitions"
+    },
+    {
       id:"e01", topic:"em", code:"E-01", title:"Coulomb's law",
       tex:"F = \\dfrac{k q_1 q_2}{r^2}",
       vars:[
