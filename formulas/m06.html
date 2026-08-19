@@ -36,6 +36,19 @@
       <span class="result-unit" id="result-unit"></span>
     </div>
     <div class="insight-panel open"><p id="insight-text"></p></div>
+
+    <div class="graph-section">
+      <div class="graph-head">
+        <h2>Live graph</h2>
+        <div class="graph-controls">
+          <label for="chart-var">Vary</label>
+          <select id="chart-var"></select>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="chart-canvas" height="220"></canvas>
+      </div>
+    </div>
   </article>
 
   <nav class="page-nav">
@@ -46,6 +59,7 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
 <script src="../assets/data.js"></script>
 <script src="../assets/site.js"></script>
 <script>var FORMULA_ID = "m06";</script>

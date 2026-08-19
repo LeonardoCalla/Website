@@ -30,17 +30,85 @@
     '</div>';
   }).join("");
 
-  function recompute(){
+  function currentVals(){
     var vals = {};
     f.vars.forEach(function(v){
       var el = document.getElementById("in-"+v.key);
       var n = el ? parseFloat(el.value) : v.def;
       vals[v.key] = isFinite(n) ? n : 0;
     });
+    return vals;
+  }
+
+  function recompute(){
+    var vals = currentVals();
     var res;
     try { res = f.compute(vals); } catch(err){ res = NaN; }
     document.getElementById("result-val").textContent = fmt(res);
+    updateChart(vals);
   }
+
+  var chartSelect = document.getElementById("chart-var");
+  chartSelect.innerHTML = f.vars.map(function(v, i){
+    return '<option value="'+v.key+'"'+(i===0?" selected":"")+'>'+v.sym+' ('+v.unit+')</option>';
+  }).join("");
+
+  var chart = null;
+  function updateChart(vals){
+    var xKey = chartSelect.value;
+    var xVar = f.vars.filter(function(v){ return v.key === xKey; })[0];
+    if (!xVar) return;
+    var N = 60;
+    var points = [];
+    for (var i = 0; i <= N; i++){
+      var x = xVar.min + (xVar.max - xVar.min) * (i / N);
+      var v2 = {};
+      for (var k in vals){ v2[k] = vals[k]; }
+      v2[xKey] = x;
+      var y;
+      try { y = f.compute(v2); } catch(e){ y = null; }
+      points.push({x:x, y:y});
+    }
+    var markerX = vals[xKey];
+    var markerY;
+    try { markerY = f.compute(vals); } catch(e){ markerY = null; }
+
+    var config = {
+      type: "line",
+      data: {
+        datasets: [
+          {
+            data: points, borderColor: "#8FD3E8", backgroundColor: "rgba(143,211,232,0.08)",
+            borderWidth: 2, pointRadius: 0, tension: 0.15, fill: true
+          },
+          {
+            data: [{x:markerX, y:markerY}], showLine: false, pointRadius: 6,
+            pointBackgroundColor: "#E8A33D", pointBorderColor: "#E8A33D"
+          }
+        ]
+      },
+      options: {
+        responsive: true, animation: false,
+        plugins: { legend: { display:false } },
+        scales: {
+          x: {
+            type: "linear",
+            title: { display:true, text: xVar.sym + " (" + xVar.unit + ")", color:"#8FA9BE" },
+            ticks: { color:"#8FA9BE" }, grid: { color:"rgba(159,196,224,0.08)" }
+          },
+          y: {
+            title: { display:true, text: f.out.sym + " (" + f.out.unit + ")", color:"#8FA9BE" },
+            ticks: { color:"#8FA9BE" }, grid: { color:"rgba(159,196,224,0.08)" }
+          }
+        }
+      }
+    };
+
+    if (chart){ chart.data = config.data; chart.options = config.options; chart.update(); }
+    else { chart = new Chart(document.getElementById("chart-canvas").getContext("2d"), config); }
+  }
+
+  chartSelect.addEventListener("change", recompute);
   varsEl.addEventListener("input", recompute);
   recompute();
 

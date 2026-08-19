@@ -211,6 +211,20 @@ a.card-link:focus-visible{ outline: 2px solid var(--amber); outline-offset:2px; 
 .formula-page-card .insight-panel{ max-height:none; }
 .formula-page-card .insight-panel p{ font-size:15px; padding-top:14px; }
 
+.graph-section{ margin-top:26px; padding-top:20px; border-top: 1px dashed var(--panel-border-soft); }
+.graph-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px; flex-wrap:wrap; }
+.graph-head h2{
+  font-family: var(--font-display); font-size:12px; letter-spacing:0.14em; text-transform:uppercase;
+  color: var(--cyan); margin:0; font-weight:700;
+}
+.graph-controls{ display:flex; align-items:center; gap:8px; font-family: var(--font-mono); font-size:11.5px; color: var(--ink-dim); }
+.graph-controls select{
+  background: var(--bg); color: var(--ink); border: 1px solid var(--panel-border-soft);
+  font-family: var(--font-mono); font-size:12px; padding: 6px 8px; border-radius: var(--radius); outline:none;
+}
+.graph-controls select:focus-visible{ border-color: var(--amber); }
+.chart-wrap{ background: rgba(255,255,255,0.02); border: 1px solid var(--panel-border-soft); border-radius: var(--radius); padding: 10px; }
+
 .page-nav{ display:flex; justify-content:space-between; gap:12px; margin-top:24px; }
 .page-nav a{
   font-family: var(--font-mono); font-size:12px; color: var(--ink-dim); text-decoration:none;

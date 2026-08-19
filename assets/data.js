@@ -30,9 +30,9 @@ var FORMULAS = [
     id:"m01", topic:"mech", code:"M-01", title:"Kinematics — velocity",
     tex:"v = v_0 + a t",
     vars:[
-      {key:"v0", sym:"v\u2080", unit:"m/s", def:0, step:0.5},
-      {key:"a", sym:"a", unit:"m/s\u00b2", def:9.8, step:0.1},
-      {key:"t", sym:"t", unit:"s", def:2, step:0.1}
+      {key:"v0", sym:"v\u2080", unit:"m/s", def:0, step:0.5, min:-20, max:20},
+      {key:"a", sym:"a", unit:"m/s\u00b2", def:9.8, step:0.1, min:-20, max:20},
+      {key:"t", sym:"t", unit:"s", def:2, step:0.1, min:0, max:20}
     ],
     out:{sym:"v", unit:"m/s"},
     compute:function(v){ return v.v0 + v.a*v.t; },
@@ -42,10 +42,10 @@ var FORMULAS = [
     id:"m02", topic:"mech", code:"M-02", title:"Kinematics — position",
     tex:"x = x_0 + v_0 t + \\tfrac{1}{2} a t^2",
     vars:[
-      {key:"x0", sym:"x\u2080", unit:"m", def:0, step:1},
-      {key:"v0", sym:"v\u2080", unit:"m/s", def:0, step:0.5},
-      {key:"a", sym:"a", unit:"m/s\u00b2", def:9.8, step:0.1},
-      {key:"t", sym:"t", unit:"s", def:2, step:0.1}
+      {key:"x0", sym:"x\u2080", unit:"m", def:0, step:1, min:-50, max:50},
+      {key:"v0", sym:"v\u2080", unit:"m/s", def:0, step:0.5, min:-20, max:20},
+      {key:"a", sym:"a", unit:"m/s\u00b2", def:9.8, step:0.1, min:-20, max:20},
+      {key:"t", sym:"t", unit:"s", def:2, step:0.1, min:0, max:20}
     ],
     out:{sym:"x", unit:"m"},
     compute:function(v){ return v.x0 + v.v0*v.t + 0.5*v.a*v.t*v.t; },
@@ -55,8 +55,8 @@ var FORMULAS = [
     id:"m03", topic:"mech", code:"M-03", title:"Newton's second law",
     tex:"F = m a",
     vars:[
-      {key:"m", sym:"m", unit:"kg", def:10, step:1},
-      {key:"a", sym:"a", unit:"m/s\u00b2", def:2, step:0.1}
+      {key:"m", sym:"m", unit:"kg", def:10, step:1, min:0.1, max:100},
+      {key:"a", sym:"a", unit:"m/s\u00b2", def:2, step:0.1, min:-20, max:20}
     ],
     out:{sym:"F", unit:"N"},
     compute:function(v){ return v.m*v.a; },
@@ -66,8 +66,8 @@ var FORMULAS = [
     id:"m04", topic:"mech", code:"M-04", title:"Kinetic energy",
     tex:"KE = \\tfrac{1}{2} m v^2",
     vars:[
-      {key:"m", sym:"m", unit:"kg", def:10, step:1},
-      {key:"v", sym:"v", unit:"m/s", def:5, step:0.5}
+      {key:"m", sym:"m", unit:"kg", def:10, step:1, min:0.1, max:100},
+      {key:"v", sym:"v", unit:"m/s", def:5, step:0.5, min:0, max:50}
     ],
     out:{sym:"KE", unit:"J"},
     compute:function(v){ return 0.5*v.m*v.v*v.v; },
@@ -77,9 +77,9 @@ var FORMULAS = [
     id:"m05", topic:"mech", code:"M-05", title:"Gravitational PE",
     tex:"PE = m g h",
     vars:[
-      {key:"m", sym:"m", unit:"kg", def:10, step:1},
-      {key:"g", sym:"g", unit:"m/s\u00b2", def:9.8, step:0.1},
-      {key:"h", sym:"h", unit:"m", def:5, step:0.5}
+      {key:"m", sym:"m", unit:"kg", def:10, step:1, min:0.1, max:100},
+      {key:"g", sym:"g", unit:"m/s\u00b2", def:9.8, step:0.1, min:0, max:20},
+      {key:"h", sym:"h", unit:"m", def:5, step:0.5, min:0, max:100}
     ],
     out:{sym:"PE", unit:"J"},
     compute:function(v){ return v.m*v.g*v.h; },
@@ -89,8 +89,8 @@ var FORMULAS = [
     id:"m06", topic:"mech", code:"M-06", title:"Momentum",
     tex:"p = m v",
     vars:[
-      {key:"m", sym:"m", unit:"kg", def:10, step:1},
-      {key:"v", sym:"v", unit:"m/s", def:5, step:0.5}
+      {key:"m", sym:"m", unit:"kg", def:10, step:1, min:0.1, max:100},
+      {key:"v", sym:"v", unit:"m/s", def:5, step:0.5, min:0, max:50}
     ],
     out:{sym:"p", unit:"kg\u00b7m/s"},
     compute:function(v){ return v.m*v.v; },
@@ -100,9 +100,9 @@ var FORMULAS = [
     id:"m07", topic:"mech", code:"M-07", title:"Universal gravitation",
     tex:"F = \\dfrac{G m_1 m_2}{r^2}",
     vars:[
-      {key:"m1", sym:"m\u2081", unit:"kg", def:1000, step:10},
-      {key:"m2", sym:"m\u2082", unit:"kg", def:1000, step:10},
-      {key:"r", sym:"r", unit:"m", def:10, step:0.5}
+      {key:"m1", sym:"m\u2081", unit:"kg", def:1000, step:10, min:1, max:10000},
+      {key:"m2", sym:"m\u2082", unit:"kg", def:1000, step:10, min:1, max:10000},
+      {key:"r", sym:"r", unit:"m", def:10, step:0.5, min:0.1, max:100}
     ],
     out:{sym:"F", unit:"N"},
     compute:function(v){ return G*v.m1*v.m2/(v.r*v.r); },
@@ -112,9 +112,9 @@ var FORMULAS = [
     id:"m08", topic:"mech", code:"M-08", title:"Centripetal force",
     tex:"F = \\dfrac{m v^2}{r}",
     vars:[
-      {key:"m", sym:"m", unit:"kg", def:10, step:1},
-      {key:"v", sym:"v", unit:"m/s", def:5, step:0.5},
-      {key:"r", sym:"r", unit:"m", def:2, step:0.5}
+      {key:"m", sym:"m", unit:"kg", def:10, step:1, min:0.1, max:100},
+      {key:"v", sym:"v", unit:"m/s", def:5, step:0.5, min:0, max:50},
+      {key:"r", sym:"r", unit:"m", def:2, step:0.5, min:0.1, max:100}
     ],
     out:{sym:"F", unit:"N"},
     compute:function(v){ return v.m*v.v*v.v/v.r; },
@@ -124,8 +124,8 @@ var FORMULAS = [
     id:"m09", topic:"mech", code:"M-09", title:"SHM period",
     tex:"T = 2\\pi\\sqrt{\\dfrac{m}{k}}",
     vars:[
-      {key:"m", sym:"m", unit:"kg", def:1, step:0.1},
-      {key:"k", sym:"k", unit:"N/m", def:10, step:0.5}
+      {key:"m", sym:"m", unit:"kg", def:1, step:0.1, min:0.01, max:50},
+      {key:"k", sym:"k", unit:"N/m", def:10, step:0.5, min:0.1, max:200}
     ],
     out:{sym:"T", unit:"s"},
     compute:function(v){ return 2*Math.PI*Math.sqrt(v.m/v.k); },
@@ -135,9 +135,9 @@ var FORMULAS = [
     id:"e01", topic:"em", code:"E-01", title:"Coulomb's law",
     tex:"F = \\dfrac{k q_1 q_2}{r^2}",
     vars:[
-      {key:"q1", sym:"q\u2081", unit:"\u00b5C", def:1, step:0.1},
-      {key:"q2", sym:"q\u2082", unit:"\u00b5C", def:1, step:0.1},
-      {key:"r", sym:"r", unit:"m", def:0.5, step:0.05}
+      {key:"q1", sym:"q\u2081", unit:"\u00b5C", def:1, step:0.1, min:-10, max:10},
+      {key:"q2", sym:"q\u2082", unit:"\u00b5C", def:1, step:0.1, min:-10, max:10},
+      {key:"r", sym:"r", unit:"m", def:0.5, step:0.05, min:0.01, max:5}
     ],
     out:{sym:"F", unit:"N"},
     compute:function(v){ var q1=v.q1*1e-6, q2=v.q2*1e-6; return K_COUL*q1*q2/(v.r*v.r); },
@@ -147,8 +147,8 @@ var FORMULAS = [
     id:"e02", topic:"em", code:"E-02", title:"Electric field (point charge)",
     tex:"E = \\dfrac{k Q}{r^2}",
     vars:[
-      {key:"Q", sym:"Q", unit:"\u00b5C", def:1, step:0.1},
-      {key:"r", sym:"r", unit:"m", def:0.5, step:0.05}
+      {key:"Q", sym:"Q", unit:"\u00b5C", def:1, step:0.1, min:-10, max:10},
+      {key:"r", sym:"r", unit:"m", def:0.5, step:0.05, min:0.01, max:5}
     ],
     out:{sym:"E", unit:"N/C"},
     compute:function(v){ var Q=v.Q*1e-6; return K_COUL*Q/(v.r*v.r); },
@@ -158,8 +158,8 @@ var FORMULAS = [
     id:"e03", topic:"em", code:"E-03", title:"Ohm's law",
     tex:"V = I R",
     vars:[
-      {key:"I", sym:"I", unit:"A", def:2, step:0.1},
-      {key:"R", sym:"R", unit:"\u03a9", def:10, step:1}
+      {key:"I", sym:"I", unit:"A", def:2, step:0.1, min:0, max:50},
+      {key:"R", sym:"R", unit:"\u03a9", def:10, step:1, min:0.1, max:1000}
     ],
     out:{sym:"V", unit:"V"},
     compute:function(v){ return v.I*v.R; },
@@ -169,8 +169,8 @@ var FORMULAS = [
     id:"e04", topic:"em", code:"E-04", title:"Electrical power",
     tex:"P = I V",
     vars:[
-      {key:"I", sym:"I", unit:"A", def:2, step:0.1},
-      {key:"V", sym:"V", unit:"V", def:12, step:1}
+      {key:"I", sym:"I", unit:"A", def:2, step:0.1, min:0, max:50},
+      {key:"V", sym:"V", unit:"V", def:12, step:1, min:0, max:240}
     ],
     out:{sym:"P", unit:"W"},
     compute:function(v){ return v.I*v.V; },
@@ -180,8 +180,8 @@ var FORMULAS = [
     id:"e05", topic:"em", code:"E-05", title:"Capacitor energy",
     tex:"U = \\tfrac{1}{2} C V^2",
     vars:[
-      {key:"C", sym:"C", unit:"mF", def:1, step:0.1},
-      {key:"V", sym:"V", unit:"V", def:12, step:1}
+      {key:"C", sym:"C", unit:"mF", def:1, step:0.1, min:0.001, max:100},
+      {key:"V", sym:"V", unit:"V", def:12, step:1, min:0, max:240}
     ],
     out:{sym:"U", unit:"J"},
     compute:function(v){ var C=v.C*1e-3; return 0.5*C*v.V*v.V; },
@@ -191,8 +191,8 @@ var FORMULAS = [
     id:"w01", topic:"wave", code:"W-01", title:"Wave speed",
     tex:"v = f \\lambda",
     vars:[
-      {key:"f", sym:"f", unit:"Hz", def:440, step:10},
-      {key:"lambda", sym:"\u03bb", unit:"m", def:0.78, step:0.01}
+      {key:"f", sym:"f", unit:"Hz", def:440, step:10, min:1, max:20000},
+      {key:"lambda", sym:"\u03bb", unit:"m", def:0.78, step:0.01, min:0.001, max:10}
     ],
     out:{sym:"v", unit:"m/s"},
     compute:function(v){ return v.f*v.lambda; },
@@ -202,9 +202,9 @@ var FORMULAS = [
     id:"t01", topic:"thermo", code:"T-01", title:"Ideal gas law",
     tex:"PV = nRT",
     vars:[
-      {key:"n", sym:"n", unit:"mol", def:1, step:0.1},
-      {key:"T", sym:"T", unit:"K", def:298, step:1},
-      {key:"V", sym:"V", unit:"L", def:22.4, step:0.5}
+      {key:"n", sym:"n", unit:"mol", def:1, step:0.1, min:0.01, max:50},
+      {key:"T", sym:"T", unit:"K", def:298, step:1, min:1, max:2000},
+      {key:"V", sym:"V", unit:"L", def:22.4, step:0.5, min:0.1, max:1000}
     ],
     out:{sym:"P", unit:"Pa"},
     compute:function(v){ var Vm3 = v.V/1000; return v.n*R_GAS*v.T/Vm3; },
