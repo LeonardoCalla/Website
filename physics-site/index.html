@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Field Reference — Introductory Physics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="page">
+
+  <div class="topbar">
+    <a class="home-link" href="index.html">PHYS&#8209;001</a>
+    <details class="menu">
+      <summary>Browse formulas</summary>
+      <div class="menu-panel" id="menu-panel"></div>
+    </details>
+    <div class="search-wrap">
+      <input id="search" type="text" placeholder="Search formulas, symbols, topics…" autocomplete="off">
+    </div>
+  </div>
+
+  <header class="titleblock">
+    <div>
+      <p class="eyebrow">Drawing No. PHYS&#8209;001</p>
+      <h1>Field Reference —<br>Introductory Physics</h1>
+      <p class="subtitle">Sixteen formulas spanning mechanics, electricity, waves and thermodynamics. Open any one for an adjustable live calculator.</p>
+    </div>
+    <div class="stamp">
+      <div class="stamp-row"><span>Scale</span><span>1:1</span></div>
+      <div class="stamp-row"><span>Rev.</span><span>B</span></div>
+      <div class="stamp-row"><span>Units</span><span>SI</span></div>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <div class="chips" id="chips"></div>
+  </div>
+
+  <main id="sections"></main>
+
+  <footer>
+    <span>16 entries · 4 sections</span>
+    <span>Open a formula for the interactive calculator</span>
+  </footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="assets/data.js"></script>
+<script src="assets/site.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  renderMenu(document.getElementById("menu-panel"), 0, null);
+
+  var params = new URLSearchParams(window.location.search);
+  var state = { topic: params.get("topic") || "all", query: (params.get("q") || "").toLowerCase() };
+
+  var chipsEl = document.getElementById("chips");
+  var allChip = document.createElement("button");
+  allChip.className = "chip" + (state.topic === "all" ? " active" : "");
+  allChip.textContent = "All";
+  allChip.setAttribute("data-topic", "all");
+  chipsEl.appendChild(allChip);
+  TOPICS.forEach(function(t){
+    var b = document.createElement("button");
+    b.className = "chip" + (state.topic === t.key ? " active" : "");
+    b.textContent = t.label;
+    b.setAttribute("data-topic", t.key);
+    chipsEl.appendChild(b);
+  });
+
+  chipsEl.addEventListener("click", function(e){
+    var btn = e.target.closest(".chip");
+    if (!btn) return;
+    state.topic = btn.getAttribute("data-topic");
+    Array.prototype.forEach.call(chipsEl.querySelectorAll(".chip"), function(c){ c.classList.remove("active"); });
+    btn.classList.add("active");
+    render();
+  });
+
+  var searchInput = document.getElementById("search");
+  searchInput.value = params.get("q") || "";
+  searchInput.addEventListener("input", function(e){
+    state.query = e.target.value.trim().toLowerCase();
+    render();
+  });
+
+  function matches(f){
+    if (state.topic !== "all" && f.topic !== state.topic) return false;
+    if (!state.query) return true;
+    var hay = (f.title + " " + f.code + " " + f.insight + " " + f.vars.map(function(v){return v.sym;}).join(" ")).toLowerCase();
+    return hay.indexOf(state.query) !== -1;
+  }
+
+  function cardHTML(f){
+    return (
+      '<a class="card-link" href="formulas/' + f.id + '.html">' +
+        '<article class="card">' +
+          '<div class="card-row"><span class="card-code">'+f.code+'</span><span class="card-topic">'+topicLabel(f.topic)+'</span></div>' +
+          '<h3>'+f.title+'</h3>' +
+          '<div class="formula small" id="tex-'+f.id+'"></div>' +
+        '</article>' +
+      '</a>'
+    );
+  }
+
+  function render(){
+    var sectionsEl = document.getElementById("sections");
+    sectionsEl.innerHTML = "";
+    var anyVisible = false;
+
+    TOPICS.forEach(function(t){
+      var items = FORMULAS.filter(function(f){ return f.topic === t.key && matches(f); });
+      if (items.length === 0) return;
+      anyVisible = true;
+      var section = document.createElement("section");
+      section.className = "section";
+      var head = document.createElement("div");
+      head.className = "section-head";
+      head.innerHTML = '<h2>'+t.label+'</h2><span class="section-count">'+items.length+' item'+(items.length===1?"":"s")+'</span>';
+      var grid = document.createElement("div");
+      grid.className = "grid";
+      grid.innerHTML = items.map(cardHTML).join("");
+      section.appendChild(head);
+      section.appendChild(grid);
+      sectionsEl.appendChild(section);
+    });
+
+    if (!anyVisible){
+      sectionsEl.innerHTML = '<p class="empty-note">No entries match that search. Try a different term or clear the filter.</p>';
+      return;
+    }
+
+    FORMULAS.forEach(function(f){
+      if (!matches(f)) return;
+      var texEl = document.getElementById("tex-"+f.id);
+      if (texEl && window.katex){
+        try { katex.render(f.tex, texEl, { throwOnError:false, displayMode:true }); }
+        catch(e){ texEl.textContent = f.tex; }
+      }
+    });
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>
