@@ -7,212 +7,36 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
-<style>
-  :root{
-    --bg:#122436;
-    --bg-deep:#0D1D2B;
-    --grid-line: rgba(159, 196, 224, 0.07);
-    --grid-line-strong: rgba(159, 196, 224, 0.14);
-    --panel:#16314A;
-    --panel-border: rgba(159, 196, 224, 0.35);
-    --panel-border-soft: rgba(159, 196, 224, 0.18);
-    --paper:#E7EEF3;
-    --ink:#EAF2F8;
-    --ink-dim:#8FA9BE;
-    --ink-faint:#4d6478;
-    --amber:#E8A33D;
-    --amber-dim: rgba(232,163,61,0.55);
-    --cyan:#8FD3E8;
-    --font-display: 'JetBrains Mono', monospace;
-    --font-body: 'Source Serif 4', Georgia, serif;
-    --font-mono: 'JetBrains Mono', monospace;
-    --radius: 3px;
-  }
-  *{ box-sizing: border-box; }
-  html,body{ margin:0; padding:0; }
-  body{
-    background:
-      linear-gradient(var(--grid-line) 1px, transparent 1px) 0 0 / 32px 32px,
-      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px) 0 0 / 32px 32px,
-      var(--bg);
-    color: var(--ink);
-    font-family: var(--font-body);
-    line-height: 1.55;
-    -webkit-font-smoothing: antialiased;
-  }
-  @media (prefers-reduced-motion: reduce){
-    *{ animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
-  }
-  ::selection{ background: var(--amber); color: #1a1105; }
-  a{ color: var(--cyan); }
-
-  .page{ max-width: 1180px; margin: 0 auto; padding: 48px 28px 80px; }
-
-  /* ---------- Title block ---------- */
-  .titleblock{
-    display:flex; justify-content:space-between; align-items:flex-end; gap:32px;
-    border-bottom: 1px solid var(--panel-border-soft);
-    padding-bottom: 28px; margin-bottom: 36px; flex-wrap: wrap;
-  }
-  .eyebrow{
-    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em;
-    color: var(--cyan); text-transform: uppercase; margin: 0 0 10px;
-    opacity: 0.85;
-  }
-  .eyebrow::before{ content:"◈ "; }
-  h1{
-    font-family: var(--font-display); font-weight:700; font-size: clamp(26px, 4vw, 40px);
-    letter-spacing: -0.01em; margin: 0 0 12px; color: var(--ink); line-height:1.15;
-  }
-  .subtitle{ font-family: var(--font-body); font-size:16px; color: var(--ink-dim); max-width: 46ch; margin:0; }
-
-  .stamp{
-    font-family: var(--font-mono); font-size: 11px; border: 1px solid var(--panel-border);
-    min-width: 190px; background: rgba(255,255,255,0.02);
-  }
-  .stamp-row{ display:flex; justify-content:space-between; padding:6px 10px; border-top: 1px solid var(--panel-border-soft); }
-  .stamp-row:first-child{ border-top:none; }
-  .stamp-row span:first-child{ color: var(--ink-dim); letter-spacing:0.08em; }
-  .stamp-row span:last-child{ color: var(--ink); font-weight:500; }
-
-  /* ---------- Toolbar ---------- */
-  .toolbar{
-    display:flex; gap:16px; align-items:center; flex-wrap:wrap;
-    margin-bottom: 34px;
-  }
-  .search-wrap{ position:relative; flex: 1 1 260px; min-width: 220px; }
-  .search-wrap::before{
-    content:"⌕"; position:absolute; left:12px; top:50%; transform: translateY(-50%);
-    color: var(--ink-dim); font-size:15px; pointer-events:none;
-  }
-  #search{
-    width:100%; background: var(--panel); border: 1px solid var(--panel-border-soft);
-    color: var(--ink); font-family: var(--font-mono); font-size: 13px;
-    padding: 11px 14px 11px 32px; border-radius: var(--radius); outline:none;
-  }
-  #search::placeholder{ color: var(--ink-faint, #4d6478); }
-  #search:focus-visible, #search:focus{ border-color: var(--amber); box-shadow: 0 0 0 2px rgba(232,163,61,0.18); }
-
-  .chips{ display:flex; gap:8px; flex-wrap:wrap; }
-  .chip{
-    font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.04em;
-    color: var(--ink-dim); background: transparent; border: 1px solid var(--panel-border-soft);
-    padding: 9px 13px; border-radius: var(--radius); cursor:pointer; text-transform:uppercase;
-  }
-  .chip:hover{ border-color: var(--panel-border); color: var(--ink); }
-  .chip:focus-visible{ outline: 2px solid var(--amber); outline-offset:1px; }
-  .chip.active{ background: rgba(232,163,61,0.14); border-color: var(--amber-dim); color: var(--amber); }
-
-  .empty-note{ font-family: var(--font-mono); font-size:13px; color: var(--ink-dim); padding: 24px 0; }
-
-  /* ---------- Section ---------- */
-  .section{ margin-bottom: 42px; }
-  .section-head{
-    display:flex; align-items:baseline; gap:12px; margin-bottom:18px;
-    border-bottom: 1px dashed var(--panel-border-soft); padding-bottom: 8px;
-  }
-  .section-head h2{
-    font-family: var(--font-display); font-size:13px; letter-spacing:0.16em; text-transform:uppercase;
-    color: var(--cyan); margin:0; font-weight:700;
-  }
-  .section-count{ font-family: var(--font-mono); font-size:11px; color: var(--ink-dim); }
-
-  .grid{
-    display:grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px;
-  }
-
-  /* ---------- Card ---------- */
-  .card{
-    position:relative; background: var(--panel); border: 1px solid var(--panel-border-soft);
-    border-radius: var(--radius); padding: 20px 20px 18px;
-  }
-  .card::before, .card::after{
-    content:""; position:absolute; width:9px; height:9px; border: 1px solid var(--panel-border);
-    top:-1px;
-  }
-  .card::before{ left:-1px; border-right:none; border-bottom:none; }
-  .card::after{ right:-1px; border-left:none; border-bottom:none; }
-  .card-row{ display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
-  .card-code{ font-family: var(--font-mono); font-size:11px; color: var(--amber); letter-spacing:0.06em; }
-  .card-topic{ font-family: var(--font-mono); font-size:10px; color: var(--ink-dim); text-transform:uppercase; letter-spacing:0.08em; }
-  .card h3{
-    font-family: var(--font-display); font-size:15.5px; font-weight:500; color: var(--ink);
-    margin: 0 0 14px; letter-spacing:0.01em;
-  }
-  .formula{
-    background: rgba(255,255,255,0.025); border: 1px solid var(--panel-border-soft);
-    border-radius: var(--radius); padding: 14px 12px; margin-bottom: 16px; text-align:center;
-    overflow-x:auto;
-  }
-  .formula .katex{ color: var(--ink); font-size: 1.08em; }
-
-  .vars{ display:grid; grid-template-columns: repeat(auto-fit, minmax(110px,1fr)); gap:10px; margin-bottom:14px; }
-  .var-field label{
-    display:block; font-family: var(--font-mono); font-size:11px; color: var(--ink-dim); margin-bottom:5px;
-  }
-  .var-field label .unit{ color: var(--ink-faint, #4d6478); }
-  .var-field input{
-    width:100%; background: transparent; border:none; border-bottom: 1px solid var(--panel-border);
-    color: var(--ink); font-family: var(--font-mono); font-size:14px; padding: 3px 2px; outline:none;
-  }
-  .var-field input:focus-visible, .var-field input:focus{ border-bottom-color: var(--amber); }
-
-  .result-row{
-    display:flex; align-items:baseline; gap:8px; padding-top:12px;
-    border-top: 1px dashed var(--panel-border-soft); margin-bottom: 10px;
-  }
-  .result-sym{ font-family: var(--font-display); font-size:13px; color: var(--ink-dim); }
-  .result-val{ font-family: var(--font-display); font-size:19px; color: var(--amber); font-weight:700; }
-  .result-unit{ font-family: var(--font-mono); font-size:12px; color: var(--ink-dim); }
-
-  .insight-toggle{
-    background:none; border:none; color: var(--cyan); font-family: var(--font-mono); font-size:11.5px;
-    letter-spacing:0.05em; cursor:pointer; padding:4px 0; display:flex; align-items:center; gap:6px;
-  }
-  .insight-toggle:focus-visible{ outline: 2px solid var(--amber); outline-offset:2px; }
-  .insight-toggle .chev{ display:inline-block; transition: transform 0.18s ease; font-size:10px; }
-  .insight-toggle.open .chev{ transform: rotate(90deg); }
-  .insight-panel{
-    max-height:0; overflow:hidden; transition: max-height 0.22s ease, margin-top 0.22s ease;
-  }
-  .insight-panel.open{ max-height: 220px; margin-top:10px; }
-  .insight-panel p{
-    font-family: var(--font-body); font-size: 13.5px; color: var(--ink-dim); margin:0;
-    padding-top:10px; border-top: 1px solid var(--panel-border-soft);
-  }
-
-  footer{
-    margin-top: 50px; padding-top: 20px; border-top: 1px solid var(--panel-border-soft);
-    font-family: var(--font-mono); font-size:11px; color: var(--ink-faint, #4d6478);
-    display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;
-  }
-
-  @media (max-width: 640px){
-    .titleblock{ flex-direction:column; align-items:flex-start; }
-    .stamp{ width:100%; }
-  }
-</style>
+<link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 <div class="page">
+
+  <div class="topbar">
+    <a class="home-link" href="index.html">PHYS&#8209;001</a>
+    <details class="menu">
+      <summary>Browse formulas</summary>
+      <div class="menu-panel" id="menu-panel"></div>
+    </details>
+    <div class="search-wrap">
+      <input id="search" type="text" placeholder="Search formulas, symbols, topics…" autocomplete="off">
+    </div>
+  </div>
 
   <header class="titleblock">
     <div>
       <p class="eyebrow">Drawing No. PHYS&#8209;001</p>
       <h1>Field Reference —<br>Introductory Physics</h1>
-      <p class="subtitle">Sixteen formulas spanning mechanics, electricity, waves and thermodynamics. Adjust any value to see the result recompute live.</p>
+      <p class="subtitle">Sixteen formulas spanning mechanics, electricity, waves and thermodynamics. Open any one for an adjustable live calculator.</p>
     </div>
     <div class="stamp">
       <div class="stamp-row"><span>Scale</span><span>1:1</span></div>
-      <div class="stamp-row"><span>Rev.</span><span>A</span></div>
+      <div class="stamp-row"><span>Rev.</span><span>B</span></div>
       <div class="stamp-row"><span>Units</span><span>SI</span></div>
     </div>
   </header>
 
   <div class="toolbar">
-    <div class="search-wrap">
-      <input id="search" type="text" placeholder="Search formulas, symbols, topics…" autocomplete="off">
-    </div>
     <div class="chips" id="chips"></div>
   </div>
 
@@ -220,252 +44,32 @@
 
   <footer>
     <span>16 entries · 4 sections</span>
-    <span>Inputs are examples — edit freely, nothing is saved</span>
+    <span>Open a formula for the interactive calculator</span>
   </footer>
 
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="assets/data.js"></script>
+<script src="assets/site.js"></script>
 <script>
 (function(){
   "use strict";
 
-  var TOPICS = [
-    {key:"mech", label:"Mechanics"},
-    {key:"em", label:"Electricity & Magnetism"},
-    {key:"wave", label:"Waves & Oscillations"},
-    {key:"thermo", label:"Thermodynamics"}
-  ];
+  renderMenu(document.getElementById("menu-panel"), 0, null);
 
-  var SUP = {"0":"\u2070","1":"\u00b9","2":"\u00b2","3":"\u00b3","4":"\u2074","5":"\u2075","6":"\u2076","7":"\u2077","8":"\u2078","9":"\u2079","-":"\u207b"};
-  function toSup(s){ return String(s).split("").map(function(c){ return SUP[c] || c; }).join(""); }
-
-  function fmt(x){
-    if (x === null || x === undefined || !isFinite(x)) return "\u2014";
-    var a = Math.abs(x);
-    if (a !== 0 && (a < 0.001 || a >= 100000)){
-      var exp = x.toExponential(2);
-      var parts = exp.split("e");
-      var mant = parseFloat(parts[0]).toString();
-      var e = parseInt(parts[1], 10);
-      return mant + " \u00d7 10" + toSup(e);
-    }
-    var s = x.toPrecision(4);
-    if (s.indexOf(".") !== -1){ s = s.replace(/0+$/,"").replace(/\.$/,""); }
-    return s;
-  }
-
-  var G = 6.674e-11, K_COUL = 8.99e9, R_GAS = 8.314;
-
-  var FORMULAS = [
-    {
-      id:"m01", topic:"mech", code:"M-01", title:"Kinematics — velocity",
-      tex:"v = v_0 + a t",
-      vars:[
-        {key:"v0", sym:"v\u2080", label:"v0", unit:"m/s", def:0, step:0.5},
-        {key:"a", sym:"a", label:"a", unit:"m/s\u00b2", def:9.8, step:0.1},
-        {key:"t", sym:"t", label:"t", unit:"s", def:2, step:0.1}
-      ],
-      out:{sym:"v", unit:"m/s"},
-      compute:function(v){ return v.v0 + v.a*v.t; },
-      insight:"The constant-acceleration case, found by integrating a = dv/dt once. Set a to \u22129.8 for something launched upward under gravity, or a = 0 to recover straight-line motion at constant speed."
-    },
-    {
-      id:"m02", topic:"mech", code:"M-02", title:"Kinematics — position",
-      tex:"x = x_0 + v_0 t + \\tfrac{1}{2} a t^2",
-      vars:[
-        {key:"x0", sym:"x\u2080", label:"x0", unit:"m", def:0, step:1},
-        {key:"v0", sym:"v\u2080", label:"v0", unit:"m/s", def:0, step:0.5},
-        {key:"a", sym:"a", label:"a", unit:"m/s\u00b2", def:9.8, step:0.1},
-        {key:"t", sym:"t", label:"t", unit:"s", def:2, step:0.1}
-      ],
-      out:{sym:"x", unit:"m"},
-      compute:function(v){ return v.x0 + v.v0*v.t + 0.5*v.a*v.t*v.t; },
-      insight:"Integrate velocity once more and out falls position. The one-half factor is not a fudge — it drops straight out of integrating v\u2080 + at with respect to time."
-    },
-    {
-      id:"m03", topic:"mech", code:"M-03", title:"Newton's second law",
-      tex:"F = m a",
-      vars:[
-        {key:"m", sym:"m", label:"m", unit:"kg", def:10, step:1},
-        {key:"a", sym:"a", label:"a", unit:"m/s\u00b2", def:2, step:0.1}
-      ],
-      out:{sym:"F", unit:"N"},
-      compute:function(v){ return v.m*v.a; },
-      insight:"Force as the rate of change of momentum, restricted to constant mass. Nearly every dynamics problem starts with a free-body diagram and this one line."
-    },
-    {
-      id:"m04", topic:"mech", code:"M-04", title:"Kinetic energy",
-      tex:"KE = \\tfrac{1}{2} m v^2",
-      vars:[
-        {key:"m", sym:"m", label:"m", unit:"kg", def:10, step:1},
-        {key:"v", sym:"v", label:"v", unit:"m/s", def:5, step:0.5}
-      ],
-      out:{sym:"KE", unit:"J"},
-      compute:function(v){ return 0.5*v.m*v.v*v.v; },
-      insight:"Because energy scales with v\u00b2, doubling speed quadruples the energy that needs to go somewhere when you stop — a large part of why braking distance and crash severity grow so fast with speed."
-    },
-    {
-      id:"m05", topic:"mech", code:"M-05", title:"Gravitational PE",
-      tex:"PE = m g h",
-      vars:[
-        {key:"m", sym:"m", label:"m", unit:"kg", def:10, step:1},
-        {key:"g", sym:"g", label:"g", unit:"m/s\u00b2", def:9.8, step:0.1},
-        {key:"h", sym:"h", label:"h", unit:"m", def:5, step:0.5}
-      ],
-      out:{sym:"PE", unit:"J"},
-      compute:function(v){ return v.m*v.g*v.h; },
-      insight:"A linear approximation that only holds near a planet's surface, where g is treated as constant. The zero point of height is arbitrary — only differences in PE have physical meaning."
-    },
-    {
-      id:"m06", topic:"mech", code:"M-06", title:"Momentum",
-      tex:"p = m v",
-      vars:[
-        {key:"m", sym:"m", label:"m", unit:"kg", def:10, step:1},
-        {key:"v", sym:"v", label:"v", unit:"m/s", def:5, step:0.5}
-      ],
-      out:{sym:"p", unit:"kg\u00b7m/s"},
-      compute:function(v){ return v.m*v.v; },
-      insight:"Conserved in any closed system with no external force — the real workhorse of collision problems, since kinetic energy is often lost to heat and sound but momentum never is."
-    },
-    {
-      id:"m07", topic:"mech", code:"M-07", title:"Universal gravitation",
-      tex:"F = \\dfrac{G m_1 m_2}{r^2}",
-      vars:[
-        {key:"m1", sym:"m\u2081", label:"m1", unit:"kg", def:1000, step:10},
-        {key:"m2", sym:"m\u2082", label:"m2", unit:"kg", def:1000, step:10},
-        {key:"r", sym:"r", label:"r", unit:"m", def:10, step:0.5}
-      ],
-      out:{sym:"F", unit:"N"},
-      compute:function(v){ return G*v.m1*v.m2/(v.r*v.r); },
-      insight:"The inverse-square law that unified falling apples with orbiting moons. G is minuscule, which is why gravity between everyday objects is unnoticeable — it only dominates at planetary scale."
-    },
-    {
-      id:"m08", topic:"mech", code:"M-08", title:"Centripetal force",
-      tex:"F = \\dfrac{m v^2}{r}",
-      vars:[
-        {key:"m", sym:"m", label:"m", unit:"kg", def:10, step:1},
-        {key:"v", sym:"v", label:"v", unit:"m/s", def:5, step:0.5},
-        {key:"r", sym:"r", label:"r", unit:"m", def:2, step:0.5}
-      ],
-      out:{sym:"F", unit:"N"},
-      compute:function(v){ return v.m*v.v*v.v/v.r; },
-      insight:"Not a new kind of force — it's the net inward force required to keep a mass on a circular path. Whatever supplies it (tension, gravity, friction) is doing the actual work of turning the path."
-    },
-    {
-      id:"m09", topic:"mech", code:"M-09", title:"SHM period",
-      tex:"T = 2\\pi\\sqrt{\\dfrac{m}{k}}",
-      vars:[
-        {key:"m", sym:"m", label:"m", unit:"kg", def:1, step:0.1},
-        {key:"k", sym:"k", label:"k", unit:"N/m", def:10, step:0.5}
-      ],
-      out:{sym:"T", unit:"s"},
-      compute:function(v){ return 2*Math.PI*Math.sqrt(v.m/v.k); },
-      insight:"Notice period doesn't depend on amplitude — a wider swing covers more distance but also moves faster, and for ideal SHM the two effects cancel exactly."
-    },
-    {
-      id:"m10", topic:"mech", code:"M-10", title:"Kinetik Energy",
-      tex:"K = dfrac{1}{2}\\m\\v^2",
-      vars:[
-        {key:"m", sym:"m", label:"m", unit:"kg", def:1, step:0.1},
-        {key:"v", sym:"v", label:"v", unit:"m/s", def:10, step:0.5}
-      ],
-      out:{sym:"K", unit:"J"},
-      compute:function(v){ return 0.5*(v.m)*(v.v)*(v.v); },
-      insight:"Kinetic Energy is the easiest form of energy to understand: The faster an object move the more energy it carries. Although this is the simplest of the definitions"
-    },
-    {
-      id:"e01", topic:"em", code:"E-01", title:"Coulomb's law",
-      tex:"F = \\dfrac{k q_1 q_2}{r^2}",
-      vars:[
-        {key:"q1", sym:"q\u2081", label:"q1 (\u00b5C)", unit:"\u00b5C", def:1, step:0.1},
-        {key:"q2", sym:"q\u2082", label:"q2 (\u00b5C)", unit:"\u00b5C", def:1, step:0.1},
-        {key:"r", sym:"r", label:"r", unit:"m", def:0.5, step:0.05}
-      ],
-      out:{sym:"F", unit:"N"},
-      compute:function(v){ var q1=v.q1*1e-6, q2=v.q2*1e-6; return K_COUL*q1*q2/(v.r*v.r); },
-      insight:"The electrical analogue of Newtonian gravity, except charge comes in two signs, so the force can repel as well as attract. k is roughly ten billion times larger than G, which is why electric forces dominate at human scales."
-    },
-    {
-      id:"e02", topic:"em", code:"E-02", title:"Electric field (point charge)",
-      tex:"E = \\dfrac{k Q}{r^2}",
-      vars:[
-        {key:"Q", sym:"Q", label:"Q (\u00b5C)", unit:"\u00b5C", def:1, step:0.1},
-        {key:"r", sym:"r", label:"r", unit:"m", def:0.5, step:0.05}
-      ],
-      out:{sym:"E", unit:"N/C"},
-      compute:function(v){ var Q=v.Q*1e-6; return K_COUL*Q/(v.r*v.r); },
-      insight:"The field is what's 'there' even before a test charge shows up — multiply by any charge q placed at that point and you get the force on it, F = qE."
-    },
-    {
-      id:"e03", topic:"em", code:"E-03", title:"Ohm's law",
-      tex:"V = I R",
-      vars:[
-        {key:"I", sym:"I", label:"I", unit:"A", def:2, step:0.1},
-        {key:"R", sym:"R", label:"R", unit:"\u03a9", def:10, step:1}
-      ],
-      out:{sym:"V", unit:"V"},
-      compute:function(v){ return v.I*v.R; },
-      insight:"Strictly an empirical law rather than a fundamental one — it holds for ohmic materials like metals at constant temperature, but breaks down for diodes and other nonlinear devices."
-    },
-    {
-      id:"e04", topic:"em", code:"E-04", title:"Electrical power",
-      tex:"P = I V",
-      vars:[
-        {key:"I", sym:"I", label:"I", unit:"A", def:2, step:0.1},
-        {key:"V", sym:"V", label:"V", unit:"V", def:12, step:1}
-      ],
-      out:{sym:"P", unit:"W"},
-      compute:function(v){ return v.I*v.V; },
-      insight:"Combine with Ohm's law to get P = I\u00b2R or P = V\u00b2/R — this is why thin wires overheat under high current, and why power lines run at high voltage and low current to cut I\u00b2R losses."
-    },
-    {
-      id:"e05", topic:"em", code:"E-05", title:"Capacitor energy",
-      tex:"U = \\tfrac{1}{2} C V^2",
-      vars:[
-        {key:"C", sym:"C", label:"C (mF)", unit:"mF", def:1, step:0.1},
-        {key:"V", sym:"V", label:"V", unit:"V", def:12, step:1}
-      ],
-      out:{sym:"U", unit:"J"},
-      compute:function(v){ var C=v.C*1e-3; return 0.5*C*v.V*v.V; },
-      insight:"A capacitor stores energy in its electric field, not as charge sitting still. That's why capacitors can release energy far faster than batteries, which store it chemically."
-    },
-    {
-      id:"w01", topic:"wave", code:"W-01", title:"Wave speed",
-      tex:"v = f \\lambda",
-      vars:[
-        {key:"f", sym:"f", label:"f", unit:"Hz", def:440, step:10},
-        {key:"lambda", sym:"\u03bb", label:"\u03bb", unit:"m", def:0.78, step:0.01}
-      ],
-      out:{sym:"v", unit:"m/s"},
-      compute:function(v){ return v.f*v.lambda; },
-      insight:"Holds for any periodic wave — sound, light, water. Fix the medium (which fixes v) and frequency and wavelength become inversely tied: raise the pitch, shorten the wavelength."
-    },
-    {
-      id:"t01", topic:"thermo", code:"T-01", title:"Ideal gas law",
-      tex:"PV = nRT",
-      vars:[
-        {key:"n", sym:"n", label:"n", unit:"mol", def:1, step:0.1},
-        {key:"T", sym:"T", label:"T", unit:"K", def:298, step:1},
-        {key:"V", sym:"V", label:"V (L)", unit:"L", def:22.4, step:0.5}
-      ],
-      out:{sym:"P", unit:"Pa"},
-      compute:function(v){ var Vm3 = v.V/1000; return v.n*R_GAS*v.T/Vm3; },
-      insight:"A limiting case assuming point-like molecules with no intermolecular forces. Remarkably good for real gases at everyday pressures, but it breaks down as a gas nears condensation."
-    }
-  ];
-
-  var state = { topic: "all", query: "" };
+  var params = new URLSearchParams(window.location.search);
+  var state = { topic: params.get("topic") || "all", query: (params.get("q") || "").toLowerCase() };
 
   var chipsEl = document.getElementById("chips");
   var allChip = document.createElement("button");
-  allChip.className = "chip active";
+  allChip.className = "chip" + (state.topic === "all" ? " active" : "");
   allChip.textContent = "All";
   allChip.setAttribute("data-topic", "all");
   chipsEl.appendChild(allChip);
   TOPICS.forEach(function(t){
     var b = document.createElement("button");
-    b.className = "chip";
+    b.className = "chip" + (state.topic === t.key ? " active" : "");
     b.textContent = t.label;
     b.setAttribute("data-topic", t.key);
     chipsEl.appendChild(b);
@@ -480,7 +84,9 @@
     render();
   });
 
-  document.getElementById("search").addEventListener("input", function(e){
+  var searchInput = document.getElementById("search");
+  searchInput.value = params.get("q") || "";
+  searchInput.addEventListener("input", function(e){
     state.query = e.target.value.trim().toLowerCase();
     render();
   });
@@ -488,46 +94,20 @@
   function matches(f){
     if (state.topic !== "all" && f.topic !== state.topic) return false;
     if (!state.query) return true;
-    var hay = (f.title + " " + f.code + " " + f.insight + " " + f.vars.map(function(v){return v.label;}).join(" ")).toLowerCase();
+    var hay = (f.title + " " + f.code + " " + f.insight + " " + f.vars.map(function(v){return v.sym;}).join(" ")).toLowerCase();
     return hay.indexOf(state.query) !== -1;
   }
 
   function cardHTML(f){
-    var topicLabel = TOPICS.filter(function(t){ return t.key===f.topic; })[0].label;
-    var varsHTML = f.vars.map(function(v){
-      return '<div class="var-field">' +
-        '<label for="in-'+f.id+'-'+v.key+'">'+v.sym+' <span class="unit">('+v.unit+')</span></label>' +
-        '<input type="number" step="'+v.step+'" value="'+v.def+'" id="in-'+f.id+'-'+v.key+'" data-formula="'+f.id+'" data-key="'+v.key+'">' +
-      '</div>';
-    }).join("");
     return (
-      '<article class="card" data-id="'+f.id+'">' +
-        '<div class="card-row"><span class="card-code">'+f.code+'</span><span class="card-topic">'+topicLabel+'</span></div>' +
-        '<h3>'+f.title+'</h3>' +
-        '<div class="formula" id="tex-'+f.id+'"></div>' +
-        '<div class="vars">'+varsHTML+'</div>' +
-        '<div class="result-row">' +
-          '<span class="result-sym">'+f.out.sym+' =</span>' +
-          '<span class="result-val" id="res-'+f.id+'">\u2014</span>' +
-          '<span class="result-unit">'+f.out.unit+'</span>' +
-        '</div>' +
-        '<button class="insight-toggle" data-id="'+f.id+'" aria-expanded="false"><span class="chev">\u25b8</span> Insight</button>' +
-        '<div class="insight-panel" id="ins-'+f.id+'"><p>'+f.insight+'</p></div>' +
-      '</article>'
+      '<a class="card-link" href="formulas/' + f.id + '.html">' +
+        '<article class="card">' +
+          '<div class="card-row"><span class="card-code">'+f.code+'</span><span class="card-topic">'+topicLabel(f.topic)+'</span></div>' +
+          '<h3>'+f.title+'</h3>' +
+          '<div class="formula small" id="tex-'+f.id+'"></div>' +
+        '</article>' +
+      '</a>'
     );
-  }
-
-  function recompute(f){
-    var vals = {};
-    f.vars.forEach(function(v){
-      var el = document.getElementById("in-"+f.id+"-"+v.key);
-      var n = el ? parseFloat(el.value) : v.def;
-      vals[v.key] = isFinite(n) ? n : 0;
-    });
-    var res;
-    try { res = f.compute(vals); } catch(err){ res = NaN; }
-    var out = document.getElementById("res-"+f.id);
-    if (out) out.textContent = fmt(res);
   }
 
   function render(){
@@ -561,31 +141,11 @@
       if (!matches(f)) return;
       var texEl = document.getElementById("tex-"+f.id);
       if (texEl && window.katex){
-        try {
-          katex.render(f.tex, texEl, { throwOnError:false, displayMode:true });
-        } catch(e){ texEl.textContent = f.tex; }
+        try { katex.render(f.tex, texEl, { throwOnError:false, displayMode:true }); }
+        catch(e){ texEl.textContent = f.tex; }
       }
-      recompute(f);
     });
   }
-
-  document.getElementById("sections").addEventListener("input", function(e){
-    var input = e.target.closest("input[data-formula]");
-    if (!input) return;
-    var id = input.getAttribute("data-formula");
-    var f = FORMULAS.filter(function(x){ return x.id === id; })[0];
-    if (f) recompute(f);
-  });
-
-  document.getElementById("sections").addEventListener("click", function(e){
-    var btn = e.target.closest(".insight-toggle");
-    if (!btn) return;
-    var id = btn.getAttribute("data-id");
-    var panel = document.getElementById("ins-"+id);
-    var isOpen = panel.classList.toggle("open");
-    btn.classList.toggle("open", isOpen);
-    btn.setAttribute("aria-expanded", isOpen ? "true" : "false");
-  });
 
   render();
 })();
